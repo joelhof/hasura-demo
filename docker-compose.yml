@@ -1,0 +1,41 @@
+version: '3'
+services:
+  oden:
+    image: hasura/graphql-engine:v1.3.0-beta.4.cli-migrations-v2
+    container_name: hasura-graphql-api
+    restart: always
+    environment:
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://squeed_admin:supersecretpassword@freya:5432/hasura
+      - HASURA_GRAPHQL_ENABLE_CONSOLE=true
+      - HASURA_GRAPHQL_LOG_LEVEL=debug
+      - HASURA_GRAPHQL_NO_OF_RETRIES=3
+      - HASURA_GRAPHQL_ADMIN_SECRET=supersecretadminpassword
+      - HASURA_GRAPHQL_JWT_SECRET={"type":"HS256", "key":"5ac152b6f8bdb8bb12959548d542cb237c4a730064bf88bbb8dd6e204912baad"}
+    ports:
+      - 19080:8080
+      - 3000:3000
+#    volumes:
+#      - ./postgresql_migrations:/hasura-migrations
+#      - ./graphql_migrations:/hasura-metadata
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"
+  thor:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: quarkus-service
+    ports:
+      - 10080:8080
+  freya:
+    container_name: postgresql
+    image: timescale/timescaledb-postgis:latest-pg12
+    restart: always
+    environment:
+      - POSTGRES_USER=squeed_admin
+      - POSTGRES_PASSWORD=supersecretpassword
+      - POSTGRES_DB=hasura
+    ports:
+      - 5435:5432
