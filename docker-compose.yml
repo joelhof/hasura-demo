@@ -14,8 +14,8 @@ services:
     ports:
       - 19080:8080
       - 3000:3000
-#    volumes:
-#      - ./postgresql_migrations:/hasura-migrations
+    volumes:
+      - ./postgresql_migrations:/hasura-migrations
 #      - ./graphql_migrations:/hasura-metadata
     logging:
       driver: "json-file"
