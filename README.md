@@ -4,6 +4,9 @@ The purpose of this project is to showcase some of the features and use cases of
 It consists of docker-compose file to run Hasura, a PostgreSQL and a Quarkus-based java microservice.
 
 ```
+./mvnw package
+```
+```
 docker-compose up
 ```
 To start environment.
