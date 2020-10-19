@@ -1,11 +1,11 @@
 version: '3'
 services:
-  oden:
+  ask:
     image: hasura/graphql-engine:v1.3.0-beta.4.cli-migrations-v2
     container_name: hasura-graphql-api
     restart: always
     environment:
-      - HASURA_GRAPHQL_DATABASE_URL=postgres://squeed_admin:supersecretpassword@freya:5432/hasura
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://squeed_admin:supersecretpassword@embla:5432/hasura
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
       - HASURA_GRAPHQL_LOG_LEVEL=debug
       - HASURA_GRAPHQL_NO_OF_RETRIES=3
@@ -22,14 +22,7 @@ services:
       options:
         max-size: "10m"
         max-file: "2"
-  thor:
-    build:
-      context: .
-      dockerfile: src/main/docker/Dockerfile.jvm
-    container_name: quarkus-service
-    ports:
-      - 10080:8080
-  freya:
+  embla:
     container_name: postgresql
     image: timescale/timescaledb-postgis:latest-pg12
     restart: always
@@ -39,3 +32,17 @@ services:
       - POSTGRES_DB=hasura
     ports:
       - 5435:5432
+  ve:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: quarkus-service
+    ports:
+      - 10080:8080
+  vile:
+    build:
+      context: breweries
+      dockerfile: Dockerfile
+    container_name: breweries-graphql-service
+    ports:
+      - 12080:4000
