@@ -38,7 +38,7 @@ services:
       dockerfile: src/main/docker/Dockerfile.jvm
     container_name: quarkus-service
     ports:
-      - 10080:8080
+      - 10080:10080
   vile:
     build:
       context: breweries
